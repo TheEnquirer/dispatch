@@ -688,6 +688,12 @@ blockquote footer {
 
 
 
+.endsep {
+    height: 20rem;
+    /*border: 1px solid red;*/
+}
+
+
 
 
 
