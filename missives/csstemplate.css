@@ -525,6 +525,18 @@ article aside a {
 }
 
 /* Images */
+img {
+    border-radius: 8px;
+    transition: 0.3s;
+    -webkit-box-shadow: 1px 5px 15px -1px rgba(0,0,0,0.25); 
+    box-shadow: 1px 5px 15px -1px rgba(0,0,0,0.25);
+}
+
+img:hover {
+    transform: scale(1.005);
+	-webkit-box-shadow: 7px 5px 15px 8px rgba(0,0,0,0.25); 
+    box-shadow: 7px 5px 15px 8px rgba(0,0,0,0.25);
+}
 figure {
     margin: 0;
     padding: 0;
@@ -536,6 +548,8 @@ figure img {
 
 figure figcaption {
     color: var(--color-text-secondary);
+    text-align: center;
+    margin-top: 20px;
 }
 
 /* Forms */
