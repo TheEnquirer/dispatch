@@ -15,6 +15,13 @@
 			<script
 src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
 type="text/javascript"></script>
+                        <script >
+                            function showDiv(id) {
+                                let el = document.getElementById(id)
+                                el.src = el.dataset.src
+                                el.style.display = 'block'
+                            }
+                        </script>
 		    </head>
     <body>
 			<header>
@@ -69,7 +76,26 @@ v1.2 :: <span class="math inline">\(
 This one would form a sort of star shape in the middle, often with blues and greens on the outside spikes.
 The surface of this function is:
 </p>
-<iframe src="https://www.geogebra.org/3d/cv3epkry?embed" width="100%" height="300" allowfullscreen style="border: 1px solid #e4e4e4;border-radius: 5px;" frameborder="0"></iframe>
+
+
+<button onclick="showDiv('sinsr')">load surface</button>
+<iframe
+        data-src="https://www.geogebra.org/3d/cv3epkry?embed"
+        width="100%"
+        height="300"
+        style="
+            border: 1px solid #e4e4e4;
+            border-radius: 5px; 
+            display: none;
+            " 
+
+        frameborder="0" 
+        onload="console.log('loaded')"
+        id="sinsr"
+>
+</iframe>
+
+
 <h3 id="ps2">
 v1.3 :: <span class="math inline">\(
     \text{random} : \{ \emptyset \} \to [0,1]
@@ -95,7 +121,23 @@ Here's what it looks like with 200 nodes (beware, a bit laggy in the middle):
 <video controls width="100%" style="border-radius: 5px"> 
   <source src="dived_dif_large_c.mp4" type="video/mp4"> 
 </video>
-<iframe src="https://www.geogebra.org/3d/ejb9xwm6?embed" width="100%" height="300" allowfullscreen style="border: 1px solid #e4e4e4;border-radius: 5px;" frameborder="0"></iframe>
+<button onclick="showDiv('dived_dif_large_c')">load surface</button>
+<iframe
+        data-src="https://www.geogebra.org/3d/ejb9xwm6?embed"
+        width="100%"
+        height="300"
+        style="
+            border: 1px solid #e4e4e4;
+            border-radius: 5px; 
+            display: none;
+            " 
+
+        frameborder="0" 
+        onload="console.log('loaded')"
+        id="dived_dif_large_c"
+>
+</iframe>
+
 <h3 id="ps2">
 v1.5 :: <span class="math inline">\(
     |\ln(x) - \ln(y)|
@@ -114,9 +156,28 @@ Here it is with 200 nodes, which tends to form lots of distinct almost-homogenou
 <video controls width="100%" style="border-radius: 5px"> 
   <source src="log_difs_large_c.mp4" type="video/mp4"> 
 </video>
-<iframe src="https://www.geogebra.org/3d/hrag8d4c?embed" width="100%" height="300" allowfullscreen style="border: 1px solid #e4e4e4;border-radius: 5px;" frameborder="0"></iframe>
+<button onclick="showDiv('log_difs_large_c')">load surface</button>
+<iframe
+        data-src="https://www.geogebra.org/3d/hrag8d4c?embed"
+        width="100%"
+        height="300"
+        style="
+            border: 1px solid #e4e4e4;
+            border-radius: 5px; 
+            display: none;
+            " 
+
+        frameborder="0" 
+        onload="console.log('loaded')"
+        id="log_difs_large_c"
+>
+</iframe>
+
 <p> 
 <p>
+
+You can find the code for all of this <a href="https://github.com/TheEnquirer/graph_theory_module_2" > here </a>.
+
 <h2 id="ps2">
 <p> 
     but I wasn't happy.
@@ -139,10 +200,48 @@ I resolved to rewrite it from scratch. But this time, I'd do it with the cavalry
 </p>
 
 <p> 
-This time, I commandeered albert,
+This time, I commandeered albert. Instead of a pairwise function determining a probability of connection and using those as weighted edges, the edges would be weighted by how often nodes played eachother. Pairings would be made by a global function which took in all the nodes and spit out a list of pairings at every game step. With the increased efficiency, we also had the game play mutiple times a second instead of on user interaction. We worked together, re-implementing everything with a new framework and new game model. After a few hours, we got this:
+</p>
+<a href="https://replit.com/@TheEnquirer/SwiftLeafyTransfer#script.mjs" > -> the codes </a>!
+<video controls width="100%" style="border-radius: 5px"> 
+  <source src="new_init.mp4" type="video/mp4"> 
+</video>
+<p>
+A total mess. The above simulation pairs nodes by score similarity, and displays the score of each node with its size. The graph barely has any structure, and seems to writhe in pain over its own existence. Just like Albert and I after a few more hours of trying to debug.
 </p>
 
+<p>
+We changed the colors to match intution as well, meaning reds were rats, blues were angels, and greens were tit-for-tats (chameleons?).
+With a score-similarty pairing, reds would quickly sink into vicous cycles, getting stuck into minima and playing eachother. After a lot of iterations, the graphs looked something like this:
+</p>
 
+<div style="display: flex; flex-direction: row; justify-content: space-evenly;">
+<img src="reds_together.png" width="45%"> </img>
+<img src="reds_together_2.png" width="45%"> </img>
+</div>
+
+<h3 id="ps2">
+v2.2 :: <span class="math inline">\(
+    \text{random} : \{ \emptyset \} \to [0,1]
+    \)</span>
+</h3>
+<p>
+Random pairings resulted in the following:
+</p>
+<video controls width="100%" style="border-radius: 5px"> 
+  <source src="random_pairing_new.mp4" type="video/mp4"> 
+</video>
+<p>
+With random pairings -- as expected -- reds would dominate. Blues would be middling, and tit-for-tats were consistently losing.
+But the graph was still a mess. This version was bassically a glorified histogram.
+</p>
+<p>
+After a few more hours of fiddling with constants, normalization techniques, and different pairing functions, we gave up.
+</p>
+<h1 id="ps2">outro</h1>
+<p>
+The sim didn't work. Some of the results were alright, but I wasn't even nearly satisfied with what we had, even after restarts and hours of tinkering. It just didn't work. 
+</p>
 
     </body>
 </html>
