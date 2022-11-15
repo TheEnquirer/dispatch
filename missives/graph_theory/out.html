@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	<link rel="stylesheet" href="csstemplate.css">
+	<meta charset="utf-8">
+	<meta name="generator" content="pandoc">
+		<meta name="author" content="Huxley Marvit">
+			<meta name="dcterms.date" content="2022-08-31">
+		<title>Graph Theory MOD#2</title>
+	<style type="text/css">code{white-space: pre;}</style>
+	<!--[if lt IE 9]>
+	    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+				<link rel="stylesheet" href="/Users/huxmarv/.config/note_conf/export_confs/csstemplate.css">
+			<script
+src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+type="text/javascript"></script>
+		    </head>
+    <body>
+			<header>
+
+	    <h1 class="title">Graph Theory MOD#2</h1>
+
+	    	    <h5 class="date">2022-10-18</h3>
+	    
+	    	    <h2 class="author"></h2>
+	    <p class="affilation"><em></em></p>
+	    
+	</header>
+		
+	
+
+<h1 id="ps2">intro</h1>
+
+<p> 
+Because the sim never really ended up working.. instead of a video, I'm making a sorta blogpost type thing instead.
+</p>
+<p>
+I initially was working on the Games on Graphs module with the large group, then broke off to work on a different type of sim right before the presentation. Instead of a histogram, I wanted to actually <i>see</i> the graph change and evolve. So, initially, I made this:
+<h2 id="ps2">v.1</h1>
+</p>
+<video controls width="100%" style="border-radius: 5px"> 
+  <source src="initial_c.mp4" type="video/mp4"> 
+</video>
+<p> 
+This code ran the game on every click. It accepted a pairwise function for two nodes that retured a probability of their connection. This function was ran for every pair, forming the weighted edges, then the node would play along its highest weighted edge. (Nodes priority was selected in a random order, and then both nodes were removed from the pool once they played a game).
+</p>
+<p>
+The game above was played with the pairwise function 
+ <p><span class="math display">\[p(x, y) = \frac{x}{y}\]</span></p>
+where
+<td><span class="math inline">\(x\)</span></td> 
+is the score total of the source node, and 
+<td><span class="math inline">\(y\)</span></td> 
+is the score total of the target node.
+</p>
+<p>
+And some patterns started to emerge -- the red nodes would group together towards the center, opposite a cluster of blue nodes with greens in between them. But it wasn't really that comphresensible. The graph was far from elucidating. I tried playing with a lot of constants, and trying many different pairwise functions. A couple of the highlights are:
+</p>
+<h3 id="ps2">
+v1.2 :: <span class="math inline">\(
+    p(x, y) = \sin ^{2}(x)+\sin ^{2}(y)
+    \)</span>
+</h3>
+<video controls width="100%" style="border-radius: 5px"> 
+  <source src="sinsr_c.mp4" type="video/mp4"> 
+</video>
+<p> 
+This one would form a sort of star shape in the middle, often with blues and greens on the outside spikes.
+The surface of this function is:
+</p>
+<iframe src="https://www.geogebra.org/3d/cv3epkry?embed" width="100%" height="300" allowfullscreen style="border: 1px solid #e4e4e4;border-radius: 5px;" frameborder="0"></iframe>
+<h3 id="ps2">
+v1.3 :: <span class="math inline">\(
+    \text{random} : \{ \emptyset \} \to [0,1]
+    \)</span>
+</h3>
+<video controls width="100%" style="border-radius: 5px"> 
+  <source src="random_c.mp4" type="video/mp4"> 
+</video>
+<h3 id="ps2">
+v1.4 :: <span class="math inline">\(
+    \frac{|x-y|}{x+y}
+    \)</span>
+</h3>
+<video controls width="100%" style="border-radius: 5px"> 
+  <source src="dived_dif_c.mp4" type="video/mp4"> 
+</video>
+<p> 
+This one was pretty cool -- it would form two hemispheres which were internally strongly connected and weakly connected across the two halves. Each hemisphere was color consistent, with a mix of greens (which makes sense as they are meant to be chameleons).
+</p>
+<p> 
+Here's what it looks like with 200 nodes (beware, a bit laggy in the middle):
+</p>
+<video controls width="100%" style="border-radius: 5px"> 
+  <source src="dived_dif_large_c.mp4" type="video/mp4"> 
+</video>
+<iframe src="https://www.geogebra.org/3d/ejb9xwm6?embed" width="100%" height="300" allowfullscreen style="border: 1px solid #e4e4e4;border-radius: 5px;" frameborder="0"></iframe>
+<h3 id="ps2">
+v1.5 :: <span class="math inline">\(
+    |\ln(x) - \ln(y)|
+    \)</span>
+</h3>
+<video controls width="100%" style="border-radius: 5px"> 
+  <source src="log_difs_c.mp4" type="video/mp4"> 
+</video>
+
+<p> 
+This one would form either seperate components dominated by one color but interestingly not homogenous. Sometimes the groups would steal nodes from eachother, or bridge themselves with nodes forming a long chaing or two distinct barely connected large groups.
+</p>
+<p> 
+Here it is with 200 nodes, which tends to form lots of distinct almost-homogenous groups that are connected in a chain more clearly.
+</p>
+<video controls width="100%" style="border-radius: 5px"> 
+  <source src="log_difs_large_c.mp4" type="video/mp4"> 
+</video>
+<iframe src="https://www.geogebra.org/3d/hrag8d4c?embed" width="100%" height="300" allowfullscreen style="border: 1px solid #e4e4e4;border-radius: 5px;" frameborder="0"></iframe>
+<p> 
+<p>
+<h2 id="ps2">
+<p> 
+    but I wasn't happy.
+</p>
+</h2>
+<p>
+The graph didn't evolve in the way I wanted, and the code was filled with janky hacks and bugs from prolonged constant-fiddling and functionality tinkering. After hours, I finally gave up on my code. 
+</p>
+<p>
+I resolved to rewrite it from scratch. But this time, I'd do it with the cavalry.
+</p>
+<h1 id="ps2">
+<p> 
+    part 2: the cavalry
+</p>
+</h1>
+
+<p>
+<i> aka albert. </i>
+</p>
+
+<p> 
+This time, I commandeered albert,
+</p>
+
+
+
+    </body>
+</html>
